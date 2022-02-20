@@ -83,6 +83,7 @@ task deobfJar(type: Jar) {
     }
 }
 
+/*
 // compile SevenCommonsLoader separately, targeting Java 6
 // for the warning message
 task compileLoader(type: JavaCompile) {
@@ -105,80 +106,15 @@ compileJava {
 }
 
 tasks.compileJava.dependsOn('compileLoader')
+*/
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.encoding = 'UTF-8'
+}
 
 artifacts {
     archives sourceJar
     archives deobfJar
-}
-
-uploadArchives() {
-    dependsOn reobf
-
-    if (project.hasProperty("mavenUrl") && project.hasProperty("mavenUser") && project.hasProperty("mavenPassword")) {
-        repositories {
-            logger.info('Publishing to files server')
-
-            mavenDeployer {
-
-                repository(url: project."mavenUrl") {
-                    authentication(userName: project."mavenUser", password: project."mavenPassword")
-                }
-
-                addFilter('deobf') {artifact, file ->
-                    artifact.attributes['classifier'] == 'dev'
-                }
-                pom('deobf').version = project.version
-                addFilter('sources') {artifact, file ->
-                    artifact.attributes['classifier'] == 'sources'
-                }
-                pom('sources').version = project.version
-                addFilter('universal') {artifact, file ->
-                    artifact.attributes['classifier'] == null
-                }
-                pom('universal').version = project.version
-
-                pom {
-                    groupId = project.group
-                    version = project.version
-                    artifactId = project.archivesBaseName
-                    project {
-                        name project.archivesBaseName
-                        packaging 'jar'
-                        description 'Shared functionality for Ivorius\' mods'
-                        url 'https://github.com/Ivorforce/IvToolkit'
-
-                        scm {
-                            url 'scm:git:git@github.com:Ivorforce/IvToolkit.git'
-                            connection 'scm:git:git@github.com:Ivorforce/IvToolkit.git'
-                            developerConnection 'scm:git:git@github.com:Ivorforce/IvToolkit.git'
-                        }
-
-                        issueManagement {
-                            system 'github'
-                            url 'https://github.com/Ivorforce/IvToolkit/issues'
-                        }
-
-                        licenses {
-                            license {
-                                name 'Apache 2.0'
-                                url 'http://www.apache.org/licenses/LICENSE-2.0.html'
-                                distribution 'repo'
-                            }
-                        }
-
-                        developers {
-                            developer {
-                                id 'Ivorius'
-                                name 'Ivorius'
-                                roles { role 'developer' }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    else {
-        logger.log(LogLevel.ERROR, 'No upload variables defined!');
-    }
 }
