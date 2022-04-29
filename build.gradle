@@ -9,12 +9,32 @@ buildscript {
         classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
             changing = true
         }
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
     }
 }
 
-apply plugin: 'forge'
+plugins {
+    id 'java-library'
+}
 
-version = "1.2.1"
+apply plugin: 'forge'
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: "com.jfrog.artifactory"
+apply plugin: "maven-publish"
+apply plugin: "maven"
+
+// Define properties file
+ext.configFile = file "build.properties"
+
+configFile.withReader {
+    // Load config. It shall from now be referenced as simply config or project.config
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.mod_version}"
 def ENV = System.getenv()
 if (ENV.DRONE_BUILD_NUMBER) {
     version += ".n" + ENV.DRONE_BUILD_NUMBER
@@ -23,8 +43,9 @@ group = "ivorius.ivtoolkit" // http://maven.apache.org/guides/mini/guide-naming-
 archivesBaseName = "IvToolkit"
 
 minecraft {
-    version = "1.7.10-10.13.4.1614-1.7.10"
-    runDir = "eclipse"
+    version = config.minecraft_version + "-" + config.forge_version
+    replaceIn "ivorius/ivtoolkit/IvToolkit.java"
+    replace "GRADLE_MODVERSION", config.mod_version
 }
 
 jar {

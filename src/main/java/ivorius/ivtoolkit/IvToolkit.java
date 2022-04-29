@@ -22,6 +22,6 @@ package ivorius.ivtoolkit;
 public class IvToolkit
 {
     public static final String NAME = "IvToolkit";
-    public static final String VERSION = "1.2.1";
+    public static final String VERSION = "GRADLE_MODVERSION";
     public static final String MODID = "ivtoolkit";
 }
