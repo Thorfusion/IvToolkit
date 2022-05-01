@@ -1,6 +1,6 @@
 [{
   "modid": "IvToolkit",
-  "name": "IvToolkit",
+  "name": "IvToolkit TF-E",
   "description": "This is a framework that I mostly use in my own mods, for shared functionality.",
   "version": "${version}",
   "mcversion": "${mcversion}",
