@@ -1,8 +1,13 @@
-IvToolkit
+IvToolkit TF-E
 =========
 
-[![Build Status](https://drone.io/github.com/Ivorforce/IvToolkit/status.png)](https://drone.io/github.com/Ivorforce/IvToolkit/files)
-
 Personal toolkit for Minecraft modding.
-
 Feel free to use both the source (as per license) and the mod.
+
+Required by Recurrent Complex
+
+License stuff
+
+[LICENSE](https://raw.githubusercontent.com/Thorfusion/IvToolkit/1.7/LICENSE.md)
+
+[ORIGNAL MOD](https://github.com/Ivorforce/IvToolkit)
